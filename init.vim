@@ -1,17 +1,17 @@
-call plug#begin()
+call  plug#begin()
 
 " Fuzzy finder
 Plug 'airblade/vim-rooter'
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-Plug 'junegunn/fzf.vim'
 Plug 'mileszs/ack.vim'
-
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
 Plug 'jiangmiao/auto-pairs'
 " Debugger Plugins
 Plug 'puremourning/vimspector'
 Plug 'szw/vim-maximizer'
-
 Plug 'gruvbox-community/gruvbox'
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'nvim-treesitter/playground'
 Plug 'tpope/vim-fugitive'
 Plug 'http://github.com/tpope/vim-surround' " Surrounding ysw)
 Plug 'https://github.com/preservim/nerdtree' " NerdTree
@@ -26,29 +26,40 @@ Plug 'https://github.com/preservim/tagbar' " Tagbar for code navigation
 Plug 'https://github.com/terryma/vim-multiple-cursors' " CTRL + N for multiple cursors
 Plug 'AndrewRadev/tagalong.vim'
 "Plug 'rstacruz/sparkup' "<> </>
-"Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 "C#
 Plug 'https://github.com/OmniSharp/Omnisharp-vim'
 Plug 'https://github.com/dense-analysis/ale'
 Plug 'https://github.com/nickspoons/vim-sharpenup'
-
 " Plebvim lsp Plugins
 Plug 'williamboman/nvim-lsp-installer'
 Plug 'neovim/nvim-lspconfig'
-Plug 'hrsh7th/cmp-nvim-lsp'
-Plug 'hrsh7th/cmp-buffer'
-Plug 'hrsh7th/nvim-cmp'
+"Plug 'hrsh7th/cmp-nvim-lsp'
+"Plug 'hrsh7th/cmp-buffer'
+"Plug 'hrsh7th/nvim-cmp'
 "Plug 'tzachar/cmp-tabnine', { 'do': './install.sh' }
-Plug 'onsails/lspkind-nvim'
+"Plug 'onsails/lspkind-nvim'
 " Plug 'github/copilot.vim'
-Plug 'nvim-lua/lsp_extensions.nvim'
-
- Plug 'nvim-lua/completion-nvim'
-Plug 'glepnir/lspsaga.nvim'
-Plug 'simrat39/symbols-outline.nvim'
+"Plug 'nvim-lua/lsp_extensions.nvim'
+"Plug 'nvim-lua/completion-nvim'
+"Plug 'glepnir/lspsaga.nvim'
+"Plug 'simrat39/symbols-outline.nvim'
 " Plug 'tjdevries/nlua.nvim'
 " Plug 'tjdevries/lsp_extensions.nvim'
+Plug 'nvim-lua/popup.nvim'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim'
+Plug 'nvim-telescope/telescope-media-files.nvim'
+
+" post install (yarn install | npm install) then load plugin only for editing supported files
+Plug 'prettier/vim-prettier', {
+  \ 'do': 'yarn install --frozen-lockfile --production',
+  \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'svelte', 'yaml', 'html'] }
+ 
+" post install (yarn install | npm install) then load plugin only for editing supported files
+"Plug 'prettier/vim-prettier', { 'do': 'yarn install --frozen-lockfile --production' }
+
 
 set encoding=UTF-8
 
@@ -66,11 +77,12 @@ if exists('+termguicolors')
  set completeopt=menuone,noinsert,noselect
  let g:completion_matching_strategy_list = ['exact', 'substring', 'fuzzy']
 
-lua require'nvim_lsp'.tsserver.setup{ on_attach=require'completion'.on_attach } 
+let g:fzf_preview_window = ['right:50%', 'ctrl-/']
+
+"lua require'nvim_lsp'.tsserver.setup{ on_attach=require'completion'.on_attach } 
 
 
 :set number
-
 :set relativenumber
 :set autoindent
 :set tabstop=4
@@ -81,6 +93,7 @@ lua require'nvim_lsp'.tsserver.setup{ on_attach=require'completion'.on_attach }
 :set linebreak
 let mapleader="\<Space>"
 
+nnoremap <leader>m :MaximizerToggle!<CR>
 " Give more space for displaying messages
 set cmdheight=2
 
@@ -94,6 +107,9 @@ set shortmess+=c
 :imap jj <Esc>
 :imap kk <Esc>
 
+
+map <m-j> <C-d>
+map <m-k> <C-u>
 
 " Shortcutting split navigation
 map <C-h> <C-w>h
@@ -123,11 +139,11 @@ set backspace=2 " Backspace over newlines
 nnoremap <C-f> :NERDTreeFocus<CR>
 nnoremap <C-n> :NERDTree<CR>
 nnoremap <C-t> :NERDTreeToggle<CR>
-"nnoremap <C-l> :call CocActionAsync('jumpDefinition')<CR>
+nnoremap <C-a> :call CocActionAsync('jumpDefinition')<CR>
 
 nmap <F8> :TagbarToggle<CR>
 
-:set completeopt-=preview " For No Previews
+" :set completeopt-=preview " For No Previews
 
 
 let g:NERDTreeDirArrowExpandable="+"
@@ -159,4 +175,26 @@ let g:airline_symbols.linenr = ''
 
 inoremap <expr> <Tab> pumvisible() ? coc#_select_confirm() : "<Tab>"
 
+let g:prettier#quickfix_enabled = 0
 
+let g:prettier#autoformat = 1
+
+let g:prettier#autoformat_require_pragma = 0
+		Plug 'example'
+"```viml
+let g:vimspector_enable_mappings = 'HUMAN'
+"```
+
+"| Key          | Mapping                                       | Function
+"| ---          | ---                                           | ---
+"| `F5`         | `<Plug>VimspectorContinue`                    | When debugging, continue. Otherwise start debugging.
+"| `F3`         | `<Plug>VimspectorStop`                        | Stop debugging.
+"| `F4`         | `<Plug>VimspectorRestart`                     | Restart debugging with the same configuration.
+"| `F6`         | `<Plug>VimspectorPause`                       | Pause debuggee.
+"| `F9`         | `<Plug>VimspectorToggleBreakpoint`            | Toggle line breakpoint on the current line.
+"| `<leader>F9` | `<Plug>VimspectorToggleConditionalBreakpoint` | Toggle conditional line breakpoint or logpoint on the current line.
+"| `F8`         | `<Plug>VimspectorAddFunctionBreakpoint`       | Add a function breakpoint for the expression under cursor
+"| `<leader>F8` | `<Plug>VimspectorRunToCursor`                 | Run to Cursor
+"| `F10`        | `<Plug>VimspectorStepOver`                    | Step Over
+"| `F11`        | `<Plug>VimspectorStepInto`                    | Step Into
+"| `F12`        | `<Plug>VimspectorStepOut`                     | Step out of current function scope
