@@ -1,5 +1,4 @@
 ﻿
-
 call plug#begin()
 
 " Fuzzy finder
@@ -112,7 +111,7 @@ set shortmess+=c
 
 :imap jj <Esc>
 :imap kk <Esc>
-
+nnoremap <leader>o :only<CR>
 
 map <m-j> <C-d>
 map <m-k> <C-u>
@@ -123,9 +122,10 @@ map <C-j> <C-w>j
 map <C-k> <C-w>k
 map <C-l> <C-w>l 
 
+
 " shortcut split opening
-nnoremap <leader>h :split<Space>
-nnoremap <leader>v :vsplit<Space>
+nnoremap <leader>h :split<CR>
+nnoremap <leader>v :vsplit<CR>
 
 " Jump to start and end of line using the home row keys
 map H ^
@@ -137,9 +137,12 @@ nnoremap <leader>e :e <C-R>=expand("%:p:h") . "/" <CR>
 
 
 " Move by line
-nnoremap j gj
-nnoremap k gk
+nnoremap j gj nnoremap k gk
 
+" Random Maps
+map Q gq
+syntax on
+filetype plugin indent on
 set backspace=2 " Backspace over newlines
 
 nnoremap <C-f> :NERDTreeFocus<CR>
@@ -208,6 +211,7 @@ let g:vimspector_enable_mappings = 'HUMAN'
 
 
 
+
 " Mappings for CoCList
 " Show all diagnostics.
 "nnoremap <silent><nowait> <space>a  :<C-u>CocList diagnostics<cr>
@@ -225,3 +229,25 @@ let g:vimspector_enable_mappings = 'HUMAN'
 "nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
 " Resume latest coc list.
 "nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
+
+
+"
+"Sometimes you make several changes, and then discover you want to go back to
+"when you have last written the file.  You can do that with this command: >
+
+"	:earlier 1f
+
+"The "f" stands for "file" here.
+
+"You can repeat this command to go further back in the past.  Or use a count
+"different from 1 to go back faster.
+
+"If you go back too far, go forward again with: >
+
+"	:later 1f
+
+" Note that these commands really work in time sequence.  This matters if you
+" made changes after undoing some changes.  It's explained in the next section.
+
+" Also note that we are talking about text writes here.  For writing the undo
+" information in a file see |undo-persistence|.
