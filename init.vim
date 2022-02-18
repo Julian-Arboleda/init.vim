@@ -1,11 +1,14 @@
-call  plug#begin()
+﻿
+
+call plug#begin()
 
 " Fuzzy finder
+
 Plug 'airblade/vim-rooter'
-Plug 'mileszs/ack.vim'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'jiangmiao/auto-pairs'
+
 " Debugger Plugins
 Plug 'puremourning/vimspector'
 Plug 'szw/vim-maximizer'
@@ -19,22 +22,24 @@ Plug 'https://github.com/tpope/vim-commentary' " For Commenting gcc & gc
 Plug 'https://github.com/vim-airline/vim-airline' " Status bar
 Plug 'https://github.com/ap/vim-css-color' " CSS Color Preview
 Plug 'https://github.com/rafi/awesome-vim-colorschemes' " Retro Scheme
-"Plug 'https://github.com/neoclide/coc.nvim',{'branch: 'release'}  " Auto Completion
+Plug 'https://github.com/neoclide/coc.nvim',{'branch': 'release'}  " Auto Completion
 Plug 'https://github.com/ryanoasis/vim-devicons' " Developer Icons
 Plug 'https://github.com/tc50cal/vim-terminal' " Vim Terminal
 Plug 'https://github.com/preservim/tagbar' " Tagbar for code navigation
 Plug 'https://github.com/terryma/vim-multiple-cursors' " CTRL + N for multiple cursors
 Plug 'AndrewRadev/tagalong.vim'
-"Plug 'rstacruz/sparkup' "<> </>
+Plug 'rstacruz/sparkup' "<> </>
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 "C#
 Plug 'https://github.com/OmniSharp/Omnisharp-vim'
 Plug 'https://github.com/dense-analysis/ale'
 Plug 'https://github.com/nickspoons/vim-sharpenup'
+
 " Plebvim lsp Plugins
-Plug 'williamboman/nvim-lsp-installer'
-Plug 'neovim/nvim-lspconfig'
+"
+"Plug 'williamboman/nvim-lsp-installer'
+"Plug 'neovim/nvim-lspconfig'
 "Plug 'hrsh7th/cmp-nvim-lsp'
 "Plug 'hrsh7th/cmp-buffer'
 "Plug 'hrsh7th/nvim-cmp'
@@ -47,19 +52,17 @@ Plug 'neovim/nvim-lspconfig'
 "Plug 'simrat39/symbols-outline.nvim'
 " Plug 'tjdevries/nlua.nvim'
 " Plug 'tjdevries/lsp_extensions.nvim'
-Plug 'nvim-lua/popup.nvim'
-Plug 'nvim-lua/plenary.nvim'
+"Plug 'nvim-lua/popup.nvim'
+"Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-telescope/telescope-media-files.nvim'
 
 " post install (yarn install | npm install) then load plugin only for editing supported files
-Plug 'prettier/vim-prettier', {
+ Plug 'prettier/vim-prettier', {
   \ 'do': 'yarn install --frozen-lockfile --production',
-  \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'svelte', 'yaml', 'html'] }
+ \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'svelte', 'yaml', 'html'] }
  
-" post install (yarn install | npm install) then load plugin only for editing supported files
-"Plug 'prettier/vim-prettier', { 'do': 'yarn install --frozen-lockfile --production' }
-
+Plug 'neoclide/coc-tsserver', {'do': 'yarn install --frozen-lockfile'}
 
 set encoding=UTF-8
 
@@ -92,6 +95,9 @@ let g:fzf_preview_window = ['right:50%', 'ctrl-/']
 :set mouse=a
 :set linebreak
 let mapleader="\<Space>"
+set nobackup
+set nowritebackup
+set hidden
 
 nnoremap <leader>m :MaximizerToggle!<CR>
 " Give more space for displaying messages
@@ -137,13 +143,14 @@ nnoremap k gk
 set backspace=2 " Backspace over newlines
 
 nnoremap <C-f> :NERDTreeFocus<CR>
-nnoremap <C-n> :NERDTree<CR>
+noremap <C-n> :NERDTree<CR>
 nnoremap <C-t> :NERDTreeToggle<CR>
 nnoremap <C-a> :call CocActionAsync('jumpDefinition')<CR>
+"autocmd! VimEnter * NERDTree | wincmd w
 
 nmap <F8> :TagbarToggle<CR>
 
-" :set completeopt-=preview " For No Previews
+ :set completeopt-=preview " For No Previews
 
 
 let g:NERDTreeDirArrowExpandable="+"
@@ -175,12 +182,12 @@ let g:airline_symbols.linenr = ''
 
 inoremap <expr> <Tab> pumvisible() ? coc#_select_confirm() : "<Tab>"
 
-let g:prettier#quickfix_enabled = 0
+command! -nargs=0 Prettier :CocCommand prettier.formatFile
+vmap <leader>f  <Plug>(coc-format-selected)
+nmap <leader>f  <Plug>(coc-format-selected)
 
-let g:prettier#autoformat = 1
 
-let g:prettier#autoformat_require_pragma = 0
-		Plug 'example'
+
 "```viml
 let g:vimspector_enable_mappings = 'HUMAN'
 "```
@@ -197,4 +204,24 @@ let g:vimspector_enable_mappings = 'HUMAN'
 "| `<leader>F8` | `<Plug>VimspectorRunToCursor`                 | Run to Cursor
 "| `F10`        | `<Plug>VimspectorStepOver`                    | Step Over
 "| `F11`        | `<Plug>VimspectorStepInto`                    | Step Into
-"| `F12`        | `<Plug>VimspectorStepOut`                     | Step out of current function scope
+"| `F12`        | `<Plug>VimspectorStepOut`                     | Step out of current function scopen
+
+
+
+" Mappings for CoCList
+" Show all diagnostics.
+"nnoremap <silent><nowait> <space>a  :<C-u>CocList diagnostics<cr>
+" Manage extensions.
+"nnoremap <silent><nowait> <space>e  :<C-u>CocList extensions<cr>
+" Show commands.
+"nnoremap <silent><nowait> <space>c  :<C-u>CocList commands<cr>
+" Find symbol of current document.
+"nnoremap <silent><nowait> <space>o  :<C-u>CocList outline<cr>
+" Search workspace symbols.
+"nnoremap <silent><nowait> <space>s  :<C-u>CocList -I symbols<cr>
+" Do default action for next item.
+"nnoremap <silent><nowait> <space>j  :<C-u>CocNext<CR>
+"" Do default action for previous item.
+"nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
+" Resume latest coc list.
+"nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
