@@ -1,4 +1,4 @@
-﻿
+﻿" git test
 call plug#begin('~/.config/nvim/plugged')
 
 " Fuzzy finder
