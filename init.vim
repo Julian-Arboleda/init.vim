@@ -1,5 +1,5 @@
 ﻿
-call plug#begin()
+call plug#begin('~/.config/nvim/plugged')
 
 " Fuzzy finder
 
@@ -58,7 +58,7 @@ Plug 'nvim-telescope/telescope-media-files.nvim'
 
 " post install (yarn install | npm install) then load plugin only for editing supported files
  Plug 'prettier/vim-prettier', {
-  \ 'do': 'yarn install --frozen-lockfile --production',
+ \ 'do': 'yarn install --frozen-lockfile --production',
  \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'svelte', 'yaml', 'html'] }
  
 Plug 'neoclide/coc-tsserver', {'do': 'yarn install --frozen-lockfile'}
@@ -66,6 +66,14 @@ Plug 'neoclide/coc-tsserver', {'do': 'yarn install --frozen-lockfile'}
 set encoding=UTF-8
 
 call plug#end()
+
+let g:prettier#autoformat = 0
+autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue PrettierAsync
+
+
+" Fzf maps
+nnoremap <C-p> :Files<CR>
+
 
 let g:gruvbox_contrast_dark = 'hard'
 if exists('+termguicolors')
@@ -83,7 +91,7 @@ let g:fzf_preview_window = ['right:50%', 'ctrl-/']
 
 "lua require'nvim_lsp'.tsserver.setup{ on_attach=require'completion'.on_attach } 
 
-
+set ignorecase
 :set number
 :set relativenumber
 :set autoindent
@@ -97,6 +105,11 @@ let mapleader="\<Space>"
 set nobackup
 set nowritebackup
 set hidden
+set wildmode=longest,list   " get bash-like tab completions
+set cc=80                   " set an 80 column border for good coding style
+map Q gq
+syntax on
+filetype plugin indent on
 
 nnoremap <leader>m :MaximizerToggle!<CR>
 " Give more space for displaying messages
@@ -137,13 +150,9 @@ nnoremap <leader>e :e <C-R>=expand("%:p:h") . "/" <CR>
 
 
 " Move by line
-nnoremap j gj nnoremap k gk
+nnoremap j gj 
+nnoremap k gk
 
-" Random Maps
-map Q gq
-syntax on
-filetype plugin indent on
-set backspace=2 " Backspace over newlines
 
 nnoremap <C-f> :NERDTreeFocus<CR>
 noremap <C-n> :NERDTree<CR>
@@ -185,9 +194,9 @@ let g:airline_symbols.linenr = ''
 
 inoremap <expr> <Tab> pumvisible() ? coc#_select_confirm() : "<Tab>"
 
-command! -nargs=0 Prettier :CocCommand prettier.formatFile
-vmap <leader>f  <Plug>(coc-format-selected)
-nmap <leader>f  <Plug>(coc-format-selected)
+"command! -nargs=0 Prettier :CocCommand prettier.formatFile
+"vmap <leader>f  <Plug>(coc-format-selected)
+"nmap <leader>f  <Plug>(coc-format-selected)
 
 
 
@@ -251,3 +260,7 @@ let g:vimspector_enable_mappings = 'HUMAN'
 
 " Also note that we are talking about text writes here.  For writing the undo
 " information in a file see |undo-persistence|.
+
+
+
+
