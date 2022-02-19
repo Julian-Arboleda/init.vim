@@ -1,4 +1,30 @@
 ﻿" git test
+" git config credential.helper store - one time store token before git push
+
+
+set ignorecase
+:set number
+:set relativenumber
+:set autoindent
+:set tabstop=4
+:set shiftwidth=4
+:set smarttab
+:set softtabstop=4
+:set mouse=a
+:set linebreak
+let mapleader="\<Space>"
+set nobackup
+set noswapfile
+set undodir
+"undodir="~/.config/nvim"
+set nowritebackup
+set hidden
+set wildmode=longest,list   " get bash-like tab completions
+
+
+"set cc=80                   " set an 80 column border for good coding style
+
+
 call plug#begin('~/.config/nvim/plugged')
 
 " Fuzzy finder
@@ -91,22 +117,6 @@ let g:fzf_preview_window = ['right:50%', 'ctrl-/']
 
 "lua require'nvim_lsp'.tsserver.setup{ on_attach=require'completion'.on_attach } 
 
-set ignorecase
-:set number
-:set relativenumber
-:set autoindent
-:set tabstop=4
-:set shiftwidth=4
-:set smarttab
-:set softtabstop=4
-:set mouse=a
-:set linebreak
-let mapleader="\<Space>"
-set nobackup
-set nowritebackup
-set hidden
-set wildmode=longest,list   " get bash-like tab completions
-set cc=80                   " set an 80 column border for good coding style
 map Q gq
 syntax on
 filetype plugin indent on
